@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="390" height="198" viewBox="0 0 390 198" role="img" aria-labelledby="title desc">
+<title id="title">~ / projects</title><desc id="desc">Happy Hacking Keystroke. Custom keystroke sounds for your Mac. Open phucledien/happy-hacking-keystroke.</desc>
+<rect x=".5" y=".5" width="389" height="197" rx="12" fill="#0d1117" stroke="#30363d"/>
+<path d="M13 1H377Q389 1 389 13V43H1V13Q1 1 13 1Z" fill="#161b22"/>
+<path d="M1 43H389" stroke="#30363d"/>
+<circle cx="22" cy="22" r="5" fill="#f85149"/><circle cx="40" cy="22" r="5" fill="#d29922"/><circle cx="58" cy="22" r="5" fill="#3fb950"/>
+<g font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">
+<text x="80" y="27" fill="#8b949e" font-size="12" font-weight="400">~ / projects</text><text x="22" y="78" fill="#58a6ff" font-size="14" font-weight="400">03</text><text x="59" y="78" fill="#8b949e" font-size="14" font-weight="400">macOS utility</text><text x="22" y="112" fill="#c9d1d9" font-size="22" font-weight="600">Happy Hacking Keystroke</text><text x="345" y="78" fill="#58a6ff" font-size="20" font-weight="400">↗</text><text x="22" y="146" fill="#c9d1d9" font-size="16" font-weight="400">Custom keystroke sounds</text><text x="22" y="171" fill="#c9d1d9" font-size="16" font-weight="400">for your Mac.</text>
+</g></svg>

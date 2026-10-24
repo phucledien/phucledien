@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="390" height="138" viewBox="0 0 390 138" role="img" aria-labelledby="title desc">
+<title id="title">~ / connect</title><desc id="desc">Find me around the web. Links below.</desc>
+<rect x=".5" y=".5" width="389" height="137" rx="12" fill="#0d1117" stroke="#30363d"/>
+<path d="M13 1H377Q389 1 389 13V43H1V13Q1 1 13 1Z" fill="#161b22"/>
+<path d="M1 43H389" stroke="#30363d"/>
+<circle cx="22" cy="22" r="5" fill="#f85149"/><circle cx="40" cy="22" r="5" fill="#d29922"/><circle cx="58" cy="22" r="5" fill="#3fb950"/>
+<g font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">
+<text x="80" y="27" fill="#8b949e" font-size="12" font-weight="400">~ / connect</text><text x="22" y="81" fill="#3fb950" font-size="18" font-weight="400">$ cat contact.txt</text><text x="22" y="113" fill="#8b949e" font-size="16" font-weight="400">Find me around the web.</text>
+</g></svg>

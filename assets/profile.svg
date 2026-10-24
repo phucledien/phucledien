@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="840" height="324" viewBox="0 0 840 324" role="img" aria-labelledby="title desc">
+<title id="title">~ / profile</title><desc id="desc">Le Dien Phuc. iOS and macOS developer. In love with Swift. Hello World.</desc>
+<rect x=".5" y=".5" width="839" height="323" rx="12" fill="#0d1117" stroke="#30363d"/>
+<path d="M13 1H827Q839 1 839 13V43H1V13Q1 1 13 1Z" fill="#161b22"/>
+<path d="M1 43H839" stroke="#30363d"/>
+<circle cx="22" cy="22" r="5" fill="#f85149"/><circle cx="40" cy="22" r="5" fill="#d29922"/><circle cx="58" cy="22" r="5" fill="#3fb950"/>
+<g font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">
+<text x="80" y="27" fill="#8b949e" font-size="12" font-weight="400">~ / profile</text><text x="30" y="82" fill="#58a6ff" font-size="17" font-weight="400">phucledien@github:~</text><text x="30" y="115" fill="#3fb950" font-size="17" font-weight="400">$ whoami</text><text x="30" y="165" fill="#c9d1d9" font-size="44" font-weight="700">Le Dien Phuc</text><text x="30" y="207" fill="#c9d1d9" font-size="23" font-weight="400">iOS &amp; macOS developer</text><text x="30" y="243" fill="#8b949e" font-size="19" font-weight="400">In love with Swift.</text><path d="M30 264H810" stroke="#30363d"/><text x="30" y="297" fill="#58a6ff" font-size="16" font-weight="400">$ echo &quot;Hello World&quot;</text><rect x="250" y="283" width="8" height="18" fill="#58a6ff"/><path d="M660 122L704 161L660 200M723 202H775" fill="none" stroke="#58a6ff" stroke-width="9" stroke-linecap="square" stroke-linejoin="miter"/><text x="655" y="242" fill="#8b949e" font-size="13" font-weight="400">SWIFT / APPLE</text>
+</g></svg>
