@@ -1,0 +1,36 @@
+name: Update profile
+
+on:
+  schedule:
+    - cron: "17 0 * * *" # daily, 07:17 in Ho Chi Minh City
+  workflow_dispatch:
+  push:
+    branches: [master]
+    paths: ["profile.config.json", "scripts/**", "README.md", ".github/workflows/profile.yml"]
+
+permissions:
+  contents: write
+
+concurrency:
+  group: profile
+  cancel-in-progress: true
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+      - name: Generate cards and project list
+        env:
+          # Optional PROFILE_TOKEN (a fine-grained token with no extra scopes) counts
+          # private contributions the way your own profile does.
+          GITHUB_TOKEN: ${{ secrets.PROFILE_TOKEN || github.token }}
+        run: bun scripts/generate.ts
+      - name: Commit if changed
+        run: |
+          if git diff --quiet; then echo "No changes"; exit 0; fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -am "chore: refresh profile cards"
+          git push

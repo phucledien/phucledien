@@ -1,0 +1,33 @@
+{
+  "login": "phucledien",
+  "name": "LE DIEN PHUC",
+  "tagline": "iOS & macOS developer · in love with Swift",
+  "subline": "Swift · TypeScript · Rust  —  Ho Chi Minh City",
+  "names": {
+    "consolelabs/hidden": "Hidden Bar"
+  },
+  "descriptions": {
+    "consolelabs/hidden": "Hide menu bar items for a cleaner Mac.",
+    "phucledien/skills": "Agent skills: game prototypes and design bibles from a game idea.",
+    "phucledien/switch-localize-skill": "A localization workflow for dialogue, fonts, menus and image text.",
+    "phucledien/happy-hacking-keystroke": "Custom keystroke sounds for your Mac.",
+    "phucledien/saigon-town": "Open shops and bargain in a fictional Sài Gòn."
+  },
+  "connect": [
+    {
+      "id": "x",
+      "label": "@phucledien",
+      "url": "https://x.com/phucledien"
+    },
+    {
+      "id": "linkedin",
+      "label": "phucledien",
+      "url": "https://www.linkedin.com/in/phucledien"
+    },
+    {
+      "id": "threads",
+      "label": "@phucledien",
+      "url": "https://www.threads.net/@phucledien"
+    }
+  ]
+}
