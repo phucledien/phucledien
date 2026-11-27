@@ -5,7 +5,7 @@ on:
     - cron: "17 0 * * *" # daily, 07:17 in Ho Chi Minh City
   workflow_dispatch:
   push:
-    branches: [main]
+    branches: [master]
     paths: ["profile.config.json", "scripts/**", "README.md", ".github/workflows/profile.yml"]
 
 permissions:
