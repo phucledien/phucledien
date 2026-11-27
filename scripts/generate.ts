@@ -38,11 +38,13 @@ do {
   cursor = page.pageInfo.hasNextPage ? page.pageInfo.endCursor : null;
 } while (cursor);
 
-const featured = await Promise.all(cfg.featured.map(async (f: any) => {
-  const [owner, name] = f.repo.split("/");
-  const d = await gql("query($o:String!,$n:String!){ repository(owner:$o,name:$n){ name url description stargazerCount primaryLanguage{name color} } }", { o: owner, n: name });
-  return { ...d.repository, name: f.name ?? d.repository.name, description: f.description ?? d.repository.description };
-}));
+// Featured = the repositories pinned on the GitHub profile, in pinned order.
+const featured = ((await gql(
+  "query($login:String!){ user(login:$login){ pinnedItems(first:6, types:REPOSITORY){ nodes{ ... on Repository{ name nameWithOwner url description stargazerCount isPrivate primaryLanguage{name color} } } } } }",
+  { login: cfg.login },
+)).user.pinnedItems.nodes as any[])
+  .filter((r) => !r.isPrivate)
+  .map((r) => ({ ...r, name: cfg.names?.[r.nameWithOwner] ?? r.name, description: cfg.descriptions[r.nameWithOwner] ?? r.description }));
 
 const days: { date: string; count: number; level: number }[] = userData.contributionsCollection.contributionCalendar.weeks
   .flatMap((w: any) => w.contributionDays)
@@ -144,6 +146,11 @@ function frame(w: number, h: number, title: string, inner: string, css = "") {
   return '<svg xmlns="http://www.w3.org/2000/svg" width="' + w + '" height="' + h + '" viewBox="0 0 ' + w + " " + h + '" role="img"><title>' + esc(title) + "</title><style>" + BASE_CSS + css + "</style>" +
     '<rect width="' + w + '" height="' + h + '" rx="10" fill="' + P.base + '"/><rect x=".5" y=".5" width="' + (w - 1) + '" height="' + (h - 1) + '" rx="10" fill="none" stroke="' + P.hl + '"/>' + inner + "</svg>\n";
 }
+function paneHeader(w: number, label: string) {
+  return '<rect x="1" y="0" width="' + (w - 2) + '" height="22" fill="' + P.surface + '"/>' +
+    '<text x="14" y="15" font-family="' + MONO + '" font-size="11" fill="' + P.iris + '">⠿</text>' +
+    '<text x="28" y="15" font-family="' + MONO + '" font-size="11" font-weight="bold" fill="' + P.text + '">' + esc(label) + "</text>";
+}
 function titleBar(w: number, label: string) {
   return '<path d="M1 10a9 9 0 0 1 9-9h' + (w - 20) + 'a9 9 0 0 1 9 9v18H1z" fill="' + P.surface + '"/>' +
     '<circle cx="18" cy="14" r="4" fill="' + P.love + '"/><circle cx="32" cy="14" r="4" fill="' + P.gold + '"/><circle cx="46" cy="14" r="4" fill="' + P.pine + '"/>' +
@@ -152,20 +159,20 @@ function titleBar(w: number, label: string) {
 
 // ---------- banner ----------
 function banner(mobile: boolean) {
-  const w = mobile ? 420 : 840, h = mobile ? 210 : 170, px = mobile ? 5 : 7;
+  const w = mobile ? 420 : 840, h = mobile ? 196 : 150, px = mobile ? 5 : 7;
   const name = cfg.name, tw = textWidth(name, px);
-  const nx = mobile ? Math.round((w - tw) / 2) - px * 2 : 36, ny = mobile ? 56 : 52;
-  let s = titleBar(w, "~/" + cfg.login) + stars(w, h, mobile ? 30 : 60, 7);
+  const nx = mobile ? Math.round((w - tw) / 2) - px * 2 : 36, ny = mobile ? 44 : 40;
+  let s = paneHeader(w, "~/" + cfg.login) + stars(w, h, mobile ? 30 : 60, 7);
   s += pixelText(name, nx + px / 2, ny + px / 2, px, { fill: P.overlay });
   s += pixelText(name, nx, ny, px, { anim: (i) => "fill:" + P.iris + ";animation:pop .5s " + (i * 0.07).toFixed(2) + "s backwards,hue 6s " + (i * 0.15).toFixed(2) + "s infinite" });
   s += '<rect x="' + (nx + tw + px * 2) + '" y="' + ny + '" width="' + px * 3 + '" height="' + px * 7 + '" fill="' + P.foam + '" style="animation:blink 1.1s steps(1) infinite"/>';
   const ty = ny + px * 7 + 30, tx = mobile ? w / 2 : nx, anchor = mobile ? "middle" : "start";
   s += '<text x="' + tx + '" y="' + ty + '" text-anchor="' + anchor + '" font-family="' + MONO + '" font-size="' + (mobile ? 14 : 15) + '" fill="' + P.text + '" style="animation:fade .8s 1s backwards">' + esc(cfg.tagline) + "</text>";
   s += '<text x="' + tx + '" y="' + (ty + 22) + '" text-anchor="' + anchor + '" font-family="' + MONO + '" font-size="' + (mobile ? 12 : 13) + '" fill="' + P.subtle + '" style="animation:fade .8s 1.3s backwards">' + esc(cfg.subline) + "</text>";
-  const hx = mobile ? w / 2 - 14 : w - 92, hy = mobile ? h - 34 : 64;
+  const hx = mobile ? w / 2 - 14 : w - 92, hy = mobile ? h - 30 : 52;
   s += '<g style="transform-origin:' + (hx + 14) + "px " + (hy + 12) + 'px;animation:beat 1.2s infinite">' + sprite(HEART, hx, hy, 4, { L: P.love }) + "</g>";
-  if (!mobile) s += '<g style="animation:fly 9s linear infinite">' + sprite(ROCKET, -30, 34, 3, { W: P.text, B: P.foam, F: P.gold, N: P.love }) + "</g>";
-  return frame(w, h, cfg.name + " — " + cfg.tagline, s, "@keyframes fly{from{transform:translateX(0)}to{transform:translateX(" + (w + 40) + "px)}}");
+  if (!mobile) s += '<g style="animation:fly 9s linear infinite">' + sprite(ROCKET, -30, 24, 3, { W: P.text, B: P.foam, F: P.gold, N: P.love }) + "</g>";
+  return { h, s, css: "@keyframes fly{from{transform:translateX(0)}to{transform:translateX(" + (w + 40) + "px)}}" };
 }
 
 // ---------- activity (stats + pixel heatmap) ----------
@@ -175,9 +182,9 @@ function activity(mobile: boolean) {
   const weeks = mobile ? 24 : 53, cell = mobile ? 13 : 12, gap = 3, step = cell + gap;
   const lastDow = new Date(days[days.length - 1].date + "T00:00:00Z").getUTCDay();
   const shown = days.slice(-((weeks - 1) * 7 + lastDow + 1));
-  const cols = mobile ? 3 : 5, sw = (w - 48) / cols, sh = 62, sy = 44;
+  const cols = mobile ? 3 : 5, sw = (w - 48) / cols, sh = 62, sy = 38;
   const statRows = Math.ceil(stats.length / cols);
-  let s = titleBar(w, "github activity");
+  let s = paneHeader(w, "github activity");
   stats.forEach((st, i) => {
     const x = 24 + (i % cols) * sw, y = sy + Math.floor(i / cols) * (sh + 10);
     s += '<g style="animation:fade .6s ' + (0.1 * i).toFixed(1) + 's backwards"><rect x="' + (x + 3) + '" y="' + y + '" width="' + (sw - 6) + '" height="' + sh + '" rx="6" fill="' + P.surface + '"/>' +
@@ -214,8 +221,20 @@ function activity(mobile: boolean) {
     s += '<rect x="' + tx + '" y="' + (lyy + 16) + '" width="7" height="7" fill="' + (v.color || P.subtle) + '"/><text x="' + (tx + 11) + '" y="' + (lyy + 23) + '" font-family="' + MONO + '" font-size="10" fill="' + P.subtle + '">' + esc(name) + "</text>";
     tx += 11 + name.length * 6.2 + 14;
   });
-  const h = lyy + 40;
-  return frame(w, h, "GitHub activity for @" + cfg.login, s, "@keyframes scan{0%{opacity:1;transform:translateX(0)}96%{opacity:1;transform:translateX(" + (weeks * step) + "px)}100%{opacity:0;transform:translateX(" + (weeks * step) + "px)}}");
+  const h = lyy + 36;
+  return { h, s, css: "@keyframes scan{0%{opacity:1;transform:translateX(0)}96%{opacity:1;transform:translateX(" + (weeks * step) + "px)}100%{opacity:0;transform:translateX(" + (weeks * step) + "px)}}" };
+}
+
+// One window, split into two panes: banner on top, activity below.
+function profileCard(mobile: boolean) {
+  const w = mobile ? 420 : 840, top = 28;
+  const a = banner(mobile), b = activity(mobile);
+  const h = top + a.h + 1 + b.h;
+  const s = titleBar(w, cfg.login + " — zsh") +
+    '<rect x="1" y="' + (top - 1) + '" width="' + (w - 2) + '" height="1" fill="' + P.hl + '"/>' + '<g transform="translate(0,' + top + ')">' + a.s + "</g>" +
+    '<rect x="1" y="' + (top + a.h) + '" width="' + (w - 2) + '" height="1" fill="' + P.hl + '"/>' +
+    '<g transform="translate(0,' + (top + a.h + 1) + ')">' + b.s + "</g>";
+  return frame(w, h, cfg.name + ": " + cfg.tagline + ". GitHub activity for @" + cfg.login, s, a.css + b.css.replace("@keyframes fly", "@keyframes fly"));
 }
 
 // ---------- connect buttons ----------
@@ -235,21 +254,16 @@ function button(c: { id: string; label: string }) {
 
 // ---------- write ----------
 mkdirSync("assets", { recursive: true });
-writeFileSync("assets/banner.svg", banner(false));
-writeFileSync("assets/banner-mobile.svg", banner(true));
-writeFileSync("assets/activity.svg", activity(false));
-writeFileSync("assets/activity-mobile.svg", activity(true));
+writeFileSync("assets/profile.svg", profileCard(false));
+writeFileSync("assets/profile-mobile.svg", profileCard(true));
 for (const c of cfg.connect) writeFileSync("assets/connect-" + c.id + ".svg", button(c));
 
-const latest = repos
-  .filter((r) => !r.isArchived && !cfg.exclude.includes(r.name) && (cfg.descriptions[r.name] || r.description))
-  .slice(0, cfg.latestCount);
 const row = (r: any) => {
-  const desc = cfg.descriptions[r.name] ?? r.description ?? "";
+  const desc = r.description ?? "";
   const meta = [r.primaryLanguage?.name, r.stargazerCount ? "★ " + fmt(r.stargazerCount) : ""].filter(Boolean).join(" · ");
   return "- **[" + r.name + "](" + r.url + ")** — " + desc + (meta ? " <sub>" + meta + "</sub>" : "");
 };
-const table = [...featured.map(row), ...latest.map(row)].join("\n");
+const table = featured.map(row).join("\n");
 const readme = readFileSync("README.md", "utf8");
 writeFileSync("README.md", readme.replace(/<!-- projects:start -->[\s\S]*<!-- projects:end -->/, "<!-- projects:start -->\n" + table + "\n<!-- projects:end -->"));
-console.log("latest:", latest.map((r) => r.name).join(", "));
+console.log("featured:", featured.map((r) => r.name).join(", "));

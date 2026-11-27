@@ -3,27 +3,15 @@
   "name": "LE DIEN PHUC",
   "tagline": "iOS & macOS developer · in love with Swift",
   "subline": "Swift · TypeScript · Rust  —  Ho Chi Minh City",
-  "featured": [
-    {
-      "repo": "dwarvesf/hidden",
-      "description": "Hide menu bar items for a cleaner Mac.",
-      "name": "Hidden Bar"
-    }
-  ],
-  "latestCount": 5,
-  "exclude": [
-    "phucledien",
-    "annie-interview-study",
-    "neetcode-submissions",
-    "how-to-live-better-vi",
-    "til",
-    "my-blog"
-  ],
+  "names": {
+    "consolelabs/hidden": "Hidden Bar"
+  },
   "descriptions": {
-    "saigon-town": "Open shops and bargain in a fictional Sài Gòn.",
-    "switch-localize-skill": "A localization workflow for dialogue, fonts, menus and image text.",
-    "happy-hacking-keystroke": "Custom keystroke sounds for your Mac.",
-    "skills": "Agent skills: game prototypes and design bibles from a game idea."
+    "consolelabs/hidden": "Hide menu bar items for a cleaner Mac.",
+    "phucledien/skills": "Agent skills: game prototypes and design bibles from a game idea.",
+    "phucledien/switch-localize-skill": "A localization workflow for dialogue, fonts, menus and image text.",
+    "phucledien/happy-hacking-keystroke": "Custom keystroke sounds for your Mac.",
+    "phucledien/saigon-town": "Open shops and bargain in a fictional Sài Gòn."
   },
   "connect": [
     {
